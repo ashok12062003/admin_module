@@ -5,16 +5,17 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.security.Key;
 import java.util.Date;
 
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:defaultSecretKeyForDevelopmentUseOnlyChangeInProduction}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.expiration:86400000}")
     private long jwtExpiration;
 
     private Key getSigningKey() {
@@ -41,10 +42,12 @@ public class JwtService {
             String username = claims.getSubject();
             String role = claims.get("role", String.class);
             
-            return UserPrincipal.builder()
-                    .username(username)
-                    .role(role)
-                    .build();
+            // Create a simple UserPrincipal with username and role
+            return new UserPrincipal(
+                null, username, null, null, role, 
+                null, null, null, null, null, null, 
+                true, true, null
+            );
         } catch (Exception e) {
             return null;
         }

@@ -3,8 +3,6 @@ package com.ridesharing.security;
 import com.ridesharing.model.Admin;
 import com.ridesharing.model.Driver;
 import com.ridesharing.model.User;
-import lombok.Builder;
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +11,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@Data
-@Builder
 public class UserPrincipal implements UserDetails {
     
-    // Constants for repeated literals
     private static final String ROLE_PREFIX = "ROLE_";
     
     private Long id;
@@ -35,20 +30,49 @@ public class UserPrincipal implements UserDetails {
     private boolean active;
     private Collection<? extends GrantedAuthority> authorities;
 
+    // Constructor
+    public UserPrincipal(Long id, String username, String email, String password, String role, 
+                        String firstName, String lastName, String phone, String licenseNumber,
+                        String vehicleType, String vehicleNumber, boolean approved, boolean active,
+                        Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.licenseNumber = licenseNumber;
+        this.vehicleType = vehicleType;
+        this.vehicleNumber = vehicleNumber;
+        this.approved = approved;
+        this.active = active;
+        this.authorities = authorities;
+    }
+
     // Static factory method for Admin
     public static UserPrincipal createAdmin(Admin admin) {
         List<GrantedAuthority> authorities = Collections.singletonList(
             new SimpleGrantedAuthority(ROLE_PREFIX + admin.getRole())
         );
 
-        return UserPrincipal.builder()
-                .id(admin.getId())
-                .username(admin.getUsername())
-                .password(admin.getPassword())
-                .role(admin.getRole())
-                .authorities(authorities)
-                .active(true)
-                .build();
+        return new UserPrincipal(
+            admin.getId(),
+            admin.getUsername(),
+            null,
+            admin.getPassword(),
+            admin.getRole(),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            true,
+            true,
+            authorities
+        );
     }
 
     // Static factory method for Driver
@@ -57,22 +81,22 @@ public class UserPrincipal implements UserDetails {
             new SimpleGrantedAuthority(ROLE_PREFIX + driver.getRole())
         );
 
-        return UserPrincipal.builder()
-                .id(driver.getId())
-                .username(driver.getEmail())
-                .email(driver.getEmail())
-                .password(driver.getPassword())
-                .firstName(driver.getFirstName())
-                .lastName(driver.getLastName())
-                .phone(driver.getPhone())
-                .licenseNumber(driver.getLicenseNumber())
-                .vehicleType(driver.getVehicleType())
-                .vehicleNumber(driver.getVehicleNumber())
-                .role(driver.getRole())
-                .approved(driver.isApproved())
-                .active(driver.isActive())
-                .authorities(authorities)
-                .build();
+        return new UserPrincipal(
+            driver.getId(),
+            driver.getEmail(),
+            driver.getEmail(),
+            driver.getPassword(),
+            driver.getRole(),
+            driver.getFirstName(),
+            driver.getLastName(),
+            driver.getPhone(),
+            driver.getLicenseNumber(),
+            driver.getVehicleType(),
+            driver.getVehicleNumber(),
+            driver.isApproved(),
+            driver.isActive(),
+            authorities
+        );
     }
 
     // Static factory method for User
@@ -81,19 +105,35 @@ public class UserPrincipal implements UserDetails {
             new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole())
         );
 
-        return UserPrincipal.builder()
-                .id(user.getId())
-                .username(user.getEmail())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .phone(user.getPhone())
-                .role(user.getRole())
-                .active(user.isActive())
-                .authorities(authorities)
-                .build();
+        return new UserPrincipal(
+            user.getId(),
+            user.getEmail(),
+            user.getEmail(),
+            user.getPassword(),
+            user.getRole(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getPhone(),
+            null,
+            null,
+            null,
+            user.isActive(),
+            user.isActive(),
+            authorities
+        );
     }
+
+    // Getters
+    public Long getId() { return id; }
+    public String getEmail() { return email; }
+    public String getRole() { return role; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public String getPhone() { return phone; }
+    public String getLicenseNumber() { return licenseNumber; }
+    public String getVehicleType() { return vehicleType; }
+    public String getVehicleNumber() { return vehicleNumber; }
+    public boolean isApproved() { return approved; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
