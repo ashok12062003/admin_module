@@ -4,18 +4,21 @@ import com.ridesharing.model.User;
 import com.ridesharing.model.Driver;
 import com.ridesharing.repository.UserRepository;
 import com.ridesharing.repository.DriverRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
 @Service
-@RequiredArgsConstructor
 public class AdminService {
 
     private final UserRepository userRepository;
     private final DriverRepository driverRepository;
+
+    public AdminService(UserRepository userRepository, DriverRepository driverRepository) {
+        this.userRepository = userRepository;
+        this.driverRepository = driverRepository;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findByActiveTrue();

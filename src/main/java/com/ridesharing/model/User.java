@@ -1,11 +1,14 @@
 package com.ridesharing.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,23 +49,29 @@ public class User {
         this.active = true;
     }
 
-    // Getters and Setters (if you're not using Lombok @Data annotation)
+    // Getters and Setters
     public Long getId() { return id; }
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
-    public String getEmail() { return email; }
-    public String getPhone() { return phone; }
-    public String getRole() { return role; }
-    public boolean isActive() { return active; }
-    public String getPassword() { return password; }
-
     public void setId(Long id) { this.id = id; }
+    
+    public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
+    
+    public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
+    
+    public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    
+    public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    
+    public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    
+    public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    
+    public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
     // Optional: toString method for debugging

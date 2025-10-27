@@ -3,18 +3,21 @@ package com.ridesharing.controller;
 import com.ridesharing.model.Admin;
 import com.ridesharing.service.AdminService;
 import com.ridesharing.service.AuthService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
-@RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
     private final AuthService authService;
+
+    public AdminController(AdminService adminService, AuthService authService) {
+        this.adminService = adminService;
+        this.authService = authService;
+    }
 
     @GetMapping("/dashboard/stats")
     public ResponseEntity<Map<String, Object>> getDashboardStats() {

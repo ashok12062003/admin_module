@@ -2,15 +2,17 @@ package com.ridesharing.service;
 
 import com.ridesharing.model.User;
 import com.ridesharing.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Optional<User> getUserProfile(String email) {
         return userRepository.findByEmail(email);

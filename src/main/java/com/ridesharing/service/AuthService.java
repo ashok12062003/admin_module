@@ -7,7 +7,6 @@ import com.ridesharing.repository.AdminRepository;
 import com.ridesharing.repository.UserRepository;
 import com.ridesharing.repository.DriverRepository;
 import com.ridesharing.security.UserPrincipal;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     // Constants for repeated string literals
@@ -43,6 +41,16 @@ public class AuthService {
     private final DriverRepository driverRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    public AuthService(AdminRepository adminRepository, UserRepository userRepository, 
+                      DriverRepository driverRepository, PasswordEncoder passwordEncoder, 
+                      JwtService jwtService) {
+        this.adminRepository = adminRepository;
+        this.userRepository = userRepository;
+        this.driverRepository = driverRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
 
     @Transactional
     public Map<String, Object> adminLogin(String username, String password) {
